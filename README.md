@@ -1,3 +1,3 @@
-blog主页：winxuan.github.io
+blog主页：sengyongan.github.io
 
 fork工程：cotes2020/jekyll-theme-chirpy

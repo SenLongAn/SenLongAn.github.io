@@ -24,19 +24,6 @@ def HelloWorld():
     print("hello world")
 ```
 
-**插入图片**
-
-![gpt执行结果](/assets/avatar.jpg)
-
-![gpt执行结果](/assets/avatar.jpg){: width="20" height="20" }{: .shadow }
-
-**插入video**
-
-{% include embed/youtube.html id='Balreaj8Yqs' %}
-
-{% include embed/bilibili.html id='BV1Kt411S77j' %}
-
-
 **提示信息**
 
 > An example showing the `tip` type prompt.

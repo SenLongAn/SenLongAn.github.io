@@ -16,7 +16,7 @@ timezone: Asia/Shanghai
 
 title: Sen's blog # the main title
 
-tagline: welcome to my blog # it will display as the sub-title
+tagline: Code changes the world !  # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Record what should be recorded.
@@ -29,16 +29,16 @@ github:
   username: sengyongan # change to your github username
 
 twitter:
-  username: twitter_username # change to your twitter username
+  username: sengyongan # change to your twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Marvin
-  email: mawenxuan963@gmail.com # change to your email address
+  name: sengyongan
+  email: 3252629901@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your twitter homepage
+    - https://twitter.com/sengyongan # change to your twitter homepage
     - https://github.com/sengyongan # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
@@ -91,10 +91,10 @@ theme_mode: # [light | dark]
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-img_cdn: https://testingcf.jsdelivr.net/gh/sengyongan/sengyongan.github.io
+img_cdn: 
 
 # the avatar on sidebar, support local or CORS resources
-avatar: /assets/avatar.jpg
+avatar: /assets/profile.png
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -111,15 +111,16 @@ comments:
     shortname: # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: # <gh-username>/<repo>
-    issue_term: # < url | pathname | title | ...>
+    repo: sengyongan # <gh-username>/<repo>
+    issue_term: pathname # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
     repo: sengyongan/sengyongan.github.io # <gh-username>/<repo>
-    repo_id: R_kgDOK9xKpw
+    repo_id: R_kgDONOG76Q
     category: Comments
-    category_id: DIC_kwDOK9xKp84CcIV2
+    category_id: DIC_kwDONOG76c4CkMlo
     mapping: pathname # optional, default to 'pathname'
+    # strict: # optional, default to '0'
     input_position: bottom # optional, default to 'bottom'
     lang: zh-CN # optional, default to the value of `site.lang`
     reactions_enabled: 1 # optional, default to the value of `1`
