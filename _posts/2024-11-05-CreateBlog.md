@@ -141,6 +141,28 @@ math: true
 如下形式
 `![](相对路径)`
 
+##### 代码段
+
+```python
+import gpt
+def HelloWorld():
+    print("hello world")
+```
+
+##### 提示信息
+
+> An example showing the `tip` type prompt.
+> {: .prompt-tip }
+
+> An example showing the `info` type prompt.
+> {: .prompt-info }
+
+> An example showing the `warning` type prompt.
+> {: .prompt-warning }
+
+> An example showing the `danger` type prompt.
+> {: .prompt-danger }
+
 ##### 评论区
 
 Utterances:
@@ -159,4 +181,4 @@ Utterances:
 
 ##### 访问量
 
-使用不蒜子
+不蒜子

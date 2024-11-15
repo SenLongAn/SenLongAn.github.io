@@ -1,3 +1,10 @@
+---
+title: VulkanTutorial（18`Multisampling，Compute shaders）
+date: 2024-11-09 12:00:00 +0800
+categories: [Vulkan]
+tags: [Vulkan]     # TAG names should always be lowercase
+math: true
+---
 # Multisampling 
 我们不希望渲染效果有锯齿，它是由于像素分辨率导致的，解决问题的方式之一时多采样抗锯齿MSAA，
 普通的光栅化渲染方式，每个像素有一个采样点，如果采样点在图元内，就绘制颜色，否则保留空白，由于分辨率，边缘处就会形成锯齿

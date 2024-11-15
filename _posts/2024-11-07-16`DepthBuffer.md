@@ -1,3 +1,10 @@
+---
+title: VulkanTutorial（16`Depth buffering）
+date: 2024-11-07 12:00:00 +0800
+categories: [Vulkan]
+tags: [Vulkan]     # TAG names should always be lowercase
+math: true
+---
 # Depth buffering
 
 之前顶点数据一直使用的2D坐标，这次我们使用3D数据，并且我们本次添加多个物体，然后进行深度测试

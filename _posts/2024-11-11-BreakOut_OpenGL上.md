@@ -1,6 +1,16 @@
+---
+title: BreakOut_OpenGL上
+date: 2024-11-11 12:00:00 +0800
+categories: [OpenGL]
+tags: [小游戏]     # TAG names should always be lowercase
+math: true
+---
 # BreakOut_OpenGL上
+
 用openGL.C++制作一个经典2D游戏——Breakout逃脱
+
 #### 游戏机制：
+
 游戏要求玩家通过操控一个挡板在屏幕范围内左右移动
 
 还有一个小球，在屏幕上运动，每次和(屏幕边框，砖块，挡板)碰撞都会使球根据碰撞位置改变运动方向
@@ -8,34 +18,42 @@
 当球运动到屏幕底部边界的时候，游戏结束（失败）
 
 当破坏所有的砖块，游戏结束（胜利）
+
 ## 游戏框架
+
 对于项目涉及的所有模块，会进行下面的设计，以便解耦，更易扩展和组合，提高复用性等
+
 #### Game类：
+
 负责渲染相关和游戏代码，
 
 从窗口中解耦，以便方便把游戏迁移到不同的窗口库中
 
 将渲染和逻辑控制分开
 
-init初始化<br/>
-update循环<br/>
-render渲染<br/>
-input输入<br/>
+init初始化 `<br/>`
+update循环 `<br/>`
+render渲染 `<br/>`
+input输入 `<br/>`
 初次之外还有一个游戏流程的enum ，保存GameState游戏状态
+
 #### 工具类：
+
 我们会频繁重用一些内容
 Shader着色器类：生成着色器程序Shader Program，快速设置uniform值glUniform***
 Texture2D纹理类：Generate生成，Bind绑定2D纹理
+
 #### 资源管理器：
+
 资源管理器，成员都是static静态函数
 接受（字节，字符串，文件路径），调用工具类加载资源，和通过map保存已加载的资源
+
 #### 项目文件
+
 program主程序main
+window窗口类
 
-Game游戏层控制类
-
-power_up启动
-game_level游戏关卡
+Game游戏层类
 
 shader着色器类（工具类）
 texture纹理类（工具类）
@@ -43,30 +61,35 @@ debug调试器（工具类）
 header第三方库引用（工具类）
 resource_manager资源管理器（工具类）
 
+game_level游戏关卡（游戏对象vec）
 game_object(游戏对象)
-ball_object球体（游戏对象）
+ball_object球体（游戏对象，继承game_object）
+power_up道具类（游戏对象，game_object）
 
 sprite_renderer精灵渲染器（渲染）
-text_renderer文本渲染（渲染）
 particle_generator粒子生成器（渲染）
-
-post_processing后期处理
-post_processor后期处理程序
+text_renderer文本渲染器（渲染）
+post_processor后期处理
 
 ## 创建窗口
+
 LINK2019❌：程序找不到库
+
 * 是否在property->link->input添加了glfw3dll.lib，opengl32.lib，glew32.lib
 * 是否添加#define GLEW_STATIC
 * 是否有glewInit();
 
 重复包含❌：OpenGL header already included, remove this include, glad already provides it
+
 * #include <GL/glew.h> 和 #include <glad/glad.h> 只能选择其中之一使用
 
 找不到 **.dll❌：
+
 * 将dll直接拷贝到和应用程序exe同一文件夹中
 
 unresolved❌：
 unresolved external symbol stbi_load referenced in function “unsigned int __cdecl loadTexture
+
 * 在#include "stb_image.h"前加上，#define STB_IMAGE_IMPLEMENTATION
 
 //
@@ -75,7 +98,9 @@ unresolved external symbol stbi_load referenced in function “unsigned int __cd
 以及所有和4个辅助文件逻辑关联起来
 
 Game，shader，texture，resource_manager
+
 ## render sprite
+
 我们希望在窗口中渲染精灵（纹理的四边形），并可以方便控制它的纹理，颜色，大小，旋转，位置等
 
 要渲染obj需要走渲染流程，需要顶点数据（包括VAO等），sprite着色器
@@ -87,6 +112,7 @@ Game，shader，texture，resource_manager
 它有顶点数据（坐标，纹理坐标）通过initRenderData函数配置VAO
 
 通过DrawSprite函数，绑定shader，纹理，uniform，VAO，最后调用DrawCall渲染
+
 ```c++
  model = glm::translate(model, glm::vec3(position, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
 
@@ -95,7 +121,7 @@ Game，shader，texture，resource_manager
  model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f)); // move origin back
 
  model = glm::scale(model, glm::vec3(size, 1.0f)); // last scale
- ```
+```
 
 你可能会疑惑额外的两次translate是干什么的？
 
@@ -103,7 +129,7 @@ Game，shader，texture，resource_manager
 
 这里要注意，变换矩阵顺序是缩放，旋转，位移，因为矩阵乘法是从右向左执行的，所以我们变换的矩阵顺序是相反的：移动，旋转，缩放
 
-在顶点着色器中，先应用缩放，然后移动到中心点旋转再移回原位，最后进行变换到世界空间位置 
+在顶点着色器中，先应用缩放，然后移动到中心点旋转再移回原位，最后进行变换到世界空间位置
 //
 现在通过在Game中调用sprite_renderer提供的接口，我们可以非常方便的渲染一个/多个sprite_quad，也非常方便应用不同属性
 
@@ -114,7 +140,9 @@ unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);Exception thrown at
 测试：
 
 ![1731466746442](/assets/img/blog/breakout/sprite.png)
+
 ## level
+
 我们想要渲染许多彩色砖块以及挡板组成的完整关卡，可以灵活的调整行或列，砖块类型，砖块布局
 
 创建gamelevel类，负责关卡创建
@@ -142,7 +170,9 @@ Game::Init中初始化关卡，并保存到gamelevel数组（不要删除之前�
 加入挡板,创建一个gameobjct，在render中绘制，然后在ProcessInput通过GLboolean接受用户输入，控制对象的属性更新
 
 ![1731478726248](/assets/img/blog/breakout/player.png)
+
 ## 球
+
 关卡中还差球体，本节既要渲染，也要球体首先能够与屏幕边缘交互
 
 我们的砖块和挡板都是gameobject游戏对象，球同样也是游戏对象，并具有额外的（半径，是否被stuck固定）属性，除了渲染外，它还有移动，边缘检测功能，因此继承gameobject
@@ -151,7 +181,9 @@ Game::Init中初始化关卡，并保存到gamelevel数组（不要删除之前�
 * Reset方便我们重置球
 
 ![1731488380271](/assets/img/blog/breakout/gif1.gif)
+
 ## window抽象
+
 我想将窗口部分从program抽象出来，让program更简化一点
 
 window窗口类，包括：
@@ -160,7 +192,9 @@ window窗口类，包括：
 * while中逻辑
 * 响应事件
 * 销毁清理
+
 ## 碰撞
+
 球体可以和屏幕边缘交互，但可以明显看到，当碰撞到砖块时没有任何交互效果
 
 首先应该考虑如何判断和砖块是否碰撞？想到了ray_tracing中求交点的一种方式AABB
@@ -208,9 +242,11 @@ GLboolean CheckCollision(BallObject &one, GameObject &two) // AABB - Circle coll
 在game中
 
 * 新增DoCollisions函数（在update调用），会检查球体和每个砖块是否发生碰撞，如果发生碰撞，就将砖块的Destroyed = GL_TRUE，即不再绘制
-  
+
 ![1731501601413](/assets/img/blog/breakout/Collision1.png)
+
 ## 碰撞处理
+
 现在可以将彩色砖块销毁，还需要和砖块以及挡板交互，即碰撞反弹，我们要注意不能让物体重叠（需要移出AABB），且要考虑反弹速度方向
 
 //

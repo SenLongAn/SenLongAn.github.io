@@ -1,5 +1,5 @@
 ---
-title: 14`UniformBuffers
+title: VulkanTutorial（14`Uniform buffers）
 date: 2024-11-03 12:00:00 +0800
 categories: [Vulkan]
 tags: [Vulkan]     # TAG names should always be lowercase
@@ -119,10 +119,8 @@ vulkan要求结构中的数据以特定的方式在内存中对齐
 
 * 标量必须按N（= 4字节给定32位浮点数）对齐。
 * •vec2必须对齐2N（= 8字节）
-
 * •vec3或vec4必须对齐4N（= 16字节）
 * •嵌套结构必须按其成员的基本对齐方式对齐
-
 * 四舍五入到16的倍数。
 * •mat4矩阵必须与vec4具有相同的对齐方式。
 

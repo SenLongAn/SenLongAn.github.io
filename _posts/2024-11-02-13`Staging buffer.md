@@ -1,11 +1,11 @@
 ---
-title: 13`Staging buffer
+title: VulkanTutorial（13`Staging buffer）
 date: 2024-11-02 12:00:00 +0800
 categories: [Vulkan]
 tags: [Vulkan]     # TAG names should always be lowercase
 math: true
 ---
-# VulkanTutorial（Staging buffer）
+# VulkanTutorial（13`Staging buffer）
 
 ## Staging buffer
 
