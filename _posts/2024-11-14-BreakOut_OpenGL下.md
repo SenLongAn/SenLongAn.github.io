@@ -45,7 +45,9 @@ model矩阵
 glm::lookat创建观察矩阵，模拟摄像机位置和旋转，根据传入摄像机位置，目标位置，上向量
 
 glm::ortho（左，右，底，顶，近，远）创建投影矩阵，截取世界坐标系，设置视景体裁剪范围，超出范围的不渲染，最终转换为标准化设备坐标（-1 -- 1）
-* 这里如果比如bottom大于top，意味着取top--buttom的范围，并将图像整体翻转 
+* 这里如果比如bottom大于top，y轴取反，图像延y方向颠倒绘制
+
+![1731732118529](/assets/img/blog/breakout/ortho.png)
 
 framebuffer大小，首次会映射到fb中，再由fb映射到视口
 
@@ -181,3 +183,34 @@ Powerups道具类继承游戏对象，每个道具以字符串的形式定义它
 当销毁砖块，生成道具，与玩家碰撞使用道具，否则销毁
 Sticky和Pass-through道具稍微改变了一些原有的游戏逻辑，因此会修改Ball类（增加了两个属性） ……
 ![1731681600324](/assets/img/blog/breakout/Post.png)
+## 音乐音效
+IrrKlang是一个可以播放WAV，MP3，OGG和FLAC文件的高级二维和三维（Windows，Mac OS X，Linux）声音引擎和音频库。它还有一些可以自由调整的音频效果，如混响、延迟和失真。
+使用非常简单，只需要导入库,初始化声音引擎，并通过play播放音乐，bool控制是否循环
+```c++
+#include <irrklang/irrKlang.h>
+using namespace irrklang;
+ISoundEngine *SoundEngine = createIrrKlangDevice();
+SoundEngine->play2D("…….mp3", GL_TRUE);
+```
+## 文本
+添加TextRenderer:文本渲染类，Text shaders文本着色器
+* 构造：
+* Load指定字体文件和字体大小，会加载128个ASCII的字符，将结果（字形纹理（库生成的），大小，垂直偏移，水平偏移）存储在map Characters中
+* RenderText,渲染字形，接受字符串，指定位置，大小，颜色，循环每个字符渲染，这里由于orthor中设置（y值取值从顶部到底部递增），需要改变计算垂直方向偏移的方法
+
+FT_Library ，FT_Init_FreeType初始化字体库
+FT_Face ，FT_New_Face字体（字符的样式）文件
+FT_Set_Pixel_Sizes定义字体大小
+FT_Load_Char将其中一个字形（单个字符的具体形状）设置为激活字形
+
+##### 增加gameplay
+√正常情况，游戏关卡循环
+√左上显示当前关卡，销毁的砖块计数，死亡次数
+√按下tab调出重置游戏菜单：暂停游戏：停止update逻辑（游戏对象属性），渲染正常
+√按键w s切换开始关卡，
+√enter重置关卡，会重置所有数据（窗口，音乐）
+√如果未选择再次按下q，不会发生任何
+√字体颜色
+
+## 项目演示
+[bilibili演示](https://www.bilibili.com/video/BV1tZUaYNE7B/?spm_id_from=333.999.0.0&vd_source=399848dcdb86de5af61de51a6dd0d33b)
