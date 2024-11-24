@@ -16,7 +16,7 @@ timezone: Asia/Shanghai
 
 title: Sen's blog # the main title
 
-tagline: Code changes the world !  # it will display as the sub-title
+tagline: If it looks right then it is right !  # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Record what should be recorded.
