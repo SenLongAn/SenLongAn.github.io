@@ -98,6 +98,9 @@ mul（）矩阵乘法（行* 列）或向量与矩阵乘法
 fixed halfLambert = dot(worldNorrnal, worldLightDir) * 0.5 + 0.5; 
 fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * halfLambert;
 ```
+逐顶点，逐像素，半兰伯特：
+
+![1732981051479](/assets/img/blog/unityshader/漫反射.png)
 
 ### 逐顶点的镜面反射实战
 
@@ -122,6 +125,10 @@ I - 2* dot(I,n)*n;   反射向量 = I + 2(I在n 的投影长度)
 ### Blinn-Phong 光照模型实战
 
 非常简单，只需要将原有的视线和反射光线点乘，替换为半程h（视线+入射光）和法线点乘
+
+逐顶点，逐像素，半程h：
+
+![1732981135891](/assets/img/blog/unityshader/镜面反射.png)
 
 ### 内置函数
 

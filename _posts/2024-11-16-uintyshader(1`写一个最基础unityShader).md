@@ -103,7 +103,7 @@ struct a2v {//application to vertex
 为此需要使用一个新的结构体v2f来定义顶点着色器的输出（要指定语义）
 
 让vert函数返回v2f，frag接受v2f参数
-
+![1732980973590](/assets/img/blog/unityshader/球体.png)
 ### 属性
 
 属性可以理解为其他图形API的**uniform**变量
