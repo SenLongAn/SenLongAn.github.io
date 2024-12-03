@@ -114,3 +114,43 @@ fixed atten = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_
 ```
 首先通过把顶点坐标变到光源空间，使用这个坐标的模的平方对衰减纹理进行采样，得到衰减值：
 * 数学公式
+
+# 阴影
+在实时渲染中，我们最常使用的是一种名为ShadowMap 阴影映射的技术，将摄像机摆到光源位置渲染，存储深度值（在unity中通过SbadowCaster 的 Pass）到阴影映射纹理中，然后在正常视角渲染，顶点T变换到光空间，与深度值贴图中深度值比较，判断顶点是否在阴影中（如果顶点深度>贴图中深度则在阴影中）
+
+Unity使用了屏幕空间的阴影映射技术 (Screenspace Shadow Map)，首先得到**阴影映射纹理**（光源视角）以及**摄像机的深度纹理**（正常视角），根据它们得到**屏幕空间的阴影图**（如果摄像机的深度图中记录的表面深度大于转换到阴影映射纹理中的深度值，就说明该表面虽然是可见的，但是却处千该光源的阴影中）
+
+想要判断是否在阴影中，需要将顶点先变换到屏幕空间中，根据阴影图采样，把采样结果和最后的光照结果相乘来产生阴影效果。
+
+### 不透明物体的阴影：
+
+在light的shadow type选择阴影类型
+
+通过设置Mesh Renderer 组件中的CastShadows（投射：加入到光源的阴影映射纹理的计算中，如果设置为two silder允许对物体的所有面都加入计算，否则默认会剔除背面） 和 Receive Shadows 属性（接收：是否让物体接收来自其他物体的阴影）
+
+使用了我们自定义的shader，可是没有使用ShadowCaster 的 Pass，为什么可以投射阴影呢？因为Fallback的内置的Specular，Specular的Fallback调用了Vertex.Lit(Unity 内置的着色器,包含 SbadowCaster的 Pass )，因此就可以作为投射物体之一
+
+现在它可以向其他物体投射阴影，但想要它接收来自其他物体的阴影，需要修改我们的代码，
+
+内置宏TRANSFER_SHADOW:计算顶点对应的阴影纹理坐标，在顶点着色器的输出结构体v2f中添加了一个内置宏SHADOW_COORDS（用于对阴影纹理采样的坐标），内置宏 SHADOW
+ATTENUATION: 计算阴影值（将获得的阴影值与光照结果相乘）
+
+### 统一计算
+我们都是把光照衰减因子和阴影值及光照结果相乘得到最终的渲染结果。那么，是不是可以有一个方法可以同时计算两个信息呢？内置的UNITY_LIGHT _ATTENUATION宏  
+
+### 透明度物体的阴影
+如果使用内置的VertexLit 中的 ShadowCaster，往往无法得到正确的阴影。
+
+在原来的透明度测试shader中修改，加入3个计算阴影的内置宏
+
+FallBack "Transparent/Cutout/VertexLit"这是一个包含透明度测试功能的 ShadowCaster Pass
+
+但是，这样的结果仍然有一些问题,默认情况下仅考虑物体的正面,因此不要忘记将MeshRenderer组件中的CastShadows属性设置为Two Sided,
+
+在Unity 中，所有内置的半透明 Shader是不会产生任何阴影效果的，但是，我们
+可以使用一些 dirty trick 来强制为半透明物体生成阴影，这可以通过把它们的 Fallback 设置为VertexLit、 Diffuse 这些不透明物体使用的 Unity Shader
+
+不透明物体阴影，透明物体阴影
+
+![1733243350694](/assets/img/blog/unityshader/shadow.png)
+
