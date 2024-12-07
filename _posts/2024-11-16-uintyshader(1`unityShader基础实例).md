@@ -1,5 +1,5 @@
 ---
-title: UnityShade入门精要（1·写一个最基础unityShader）
+title: UnityShade入门精要（1·unityShader基础实例）
 date: 2024-11-16 12:00:00 +0800
 categories: [Unity_Shader]
 tags: [shader]     # TAG names should always be lowercase
@@ -104,6 +104,7 @@ struct a2v {//application to vertex
 
 让vert函数返回v2f，frag接受v2f参数
 ![1732980973590](/assets/img/blog/unityshader/球体.png)
+
 ### 属性
 
 属性可以理解为其他图形API的**uniform**变量

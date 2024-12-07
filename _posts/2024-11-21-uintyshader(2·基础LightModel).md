@@ -1,5 +1,5 @@
 ---
-title: UnityShade入门精要（2·LightModel_BlinnPhong）
+title: UnityShade入门精要（2·基础LightModel）
 date: 2024-11-21 12:00:00 +0800
 categories: [Unity_Shader]
 tags: [shader]     # TAG names should always be lowercase
@@ -9,7 +9,7 @@ math: true
 
 如果它看起来是对的， 那么它就是对的
 
-###  理论
+### 理论
 
 颜色的本质？
 看到的物体颜色，是光源发出的光线经过物体散射后到人眼
@@ -98,6 +98,7 @@ mul（）矩阵乘法（行* 列）或向量与矩阵乘法
 fixed halfLambert = dot(worldNorrnal, worldLightDir) * 0.5 + 0.5; 
 fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * halfLambert;
 ```
+
 逐顶点，逐像素，半兰伯特：
 
 ![1732981051479](/assets/img/blog/unityshader/漫反射.png)

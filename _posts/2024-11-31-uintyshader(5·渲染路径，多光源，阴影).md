@@ -1,5 +1,5 @@
 ---
-title: UnityShade入门精要（5·更复杂的光照）
+title: UnityShade入门精要（5·渲染路径，多光源，阴影）
 date: 2024-11-31 12:00:00 +0800
 categories: [Unity_Shader]
 tags: [shader]     # TAG names should always be lowercase
