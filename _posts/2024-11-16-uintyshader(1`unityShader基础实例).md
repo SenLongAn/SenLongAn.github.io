@@ -1,5 +1,5 @@
 ---
-title: UnityShade入门精要（1·unityShader基础实例）
+title: UnityShade入门精要（1·unityShader基础和Debug）
 date: 2024-11-16 12:00:00 +0800
 categories: [Unity_Shader]
 tags: [shader]     # TAG names should always be lowercase
@@ -168,11 +168,3 @@ shader中的语法错误，opengl会自动告诉你
 当鼠标点击OnMouseDown()执行，获取鼠标位置
 OnPostRender()每帧执行，渲染屏幕大小纹理，根据鼠标位置从纹理获取颜色
 为box应用方形纹理（应用颜色）
-
-# unity Debug
-
-运行IDE，unity editor，即可断点调试
-
-# unity editor
-
-右键cs脚本，find reference in scene / project
