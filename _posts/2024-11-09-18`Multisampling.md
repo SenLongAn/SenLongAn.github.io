@@ -112,3 +112,6 @@ vkCmdDispatch将在x维度中分派PARTICLE_COUNT/ 256本地工作组，首先�
 ## Drawing the particle system
 在recordCommandBuffer中vkCmdBindVertexBuffers绑定SSAO
 ![1731232273360](/assets/img/blog/vulkan/Compute%20shaders.png)
+
+
+-------------------------------------vulkan tutorial 完结--------------------------------------------
