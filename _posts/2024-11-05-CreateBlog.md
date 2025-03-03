@@ -1,7 +1,7 @@
 ---
 title: 个人博客网站搭建
 date: 2024-11-05 12:00:00 +0800
-categories: [其他]
+categories: [技术]
 tags: [技术]     # TAG names should always be lowercase
 math: true
 ---
