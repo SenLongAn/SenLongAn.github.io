@@ -1,8 +1,8 @@
 ---
-title: 树状数组(Binary Indexed Tree -- BIT)
+title: 1`树状数组(Binary Indexed Tree -- BIT)
 date: 2024-11-07 12:00:00 +0800
-categories: [算法]
-tags: [BIT]     # TAG names should always be lowercase
+categories: [算法与数据结构]
+tags: []     # TAG names should always be lowercase
 math: true
 ---
 # 树状数组(Binary Indexed Tree -- BIT)
@@ -28,7 +28,7 @@ lowbit(x) = x & (-x)
 可以在logN的时间，计算前缀和 / 区间和
 比如：如果要计算sum(7)->a[1]--a[7]的和
 
-```
+```c++
 -> = t[7]+t[6]+t[4], 
 而 6 = 7 - lowbit(7), 4 = 6 - lowbit(6) 
 = t[7] + t[（7-lowbit(7)）] + t[（（7-lowbit(7)）-lowbit(（7-lowbit(7)）) ]
@@ -36,7 +36,7 @@ lowbit(x) = x & (-x)
 
 如果没有树形结构，那么我们要遍历7个数组元素求和，而现在只需要计算3次，即可获得前7个元素的和
 
-```
+```c++
 int ask(x){
 	int sum = 0;
 	for(int i=x;i;i-=lowbit(i)){
@@ -50,7 +50,7 @@ int ask(x){
 
 为了维护树形数组，当我们修改任意一个a[x]的值，即a[x] + k，都要修改所有t[x] + k以及所有父节点的值 + k
 
-```
+```c++
 int add_dandian(int x,int k)
 {
 	for(int i=x;i<=n;i+=lowbit(i))
@@ -63,7 +63,7 @@ int add_dandian(int x,int k)
 如何求[L,R]的区间和呢？
 利用前缀和相减的性质：[ L , R ] = [ 1 , R ] − [ 1 , L − 1 ]
 
-```
+```c++
 int search(int L,int R)
 {
 	int ans = 0;
@@ -79,7 +79,7 @@ int search(int L,int R)
 
 对区间[L,R]+k
 
-```
+```c++
 int update(int pos,int k)
 {
 	for(int i=pos;i<=n;i+=lowbit(i))
@@ -100,7 +100,7 @@ update(R+1,-k);
 
 也就是如何快速找到前缀和，track就是单点修改，getRankOfNumber就是前缀查询
 
-```
+```c++
 class StreamRank {
     vector<int> vec;
     int lowbit(int x) {
