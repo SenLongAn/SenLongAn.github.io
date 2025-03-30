@@ -1,5 +1,5 @@
 ---
-title: c++(6·= default/delete、一些关键字、作用域生命周期链接性)
+title: c++(6·= default、一些关键字、作用域、定义、数据类型、初始化)
 date: 2025-03-30 12:00:00 +0800
 categories: [C++]
 tags: []     # TAG names should always be lowercase
@@ -8,6 +8,23 @@ math: true
 # std::chrono
 
 一个用于处理时间和日期的库
+
+```c++
+#include <chrono>
+
+auto start = std::chrono::steady_clock::now();
+//……
+auto end = std::chrono::steady_clock::now();
+std::chrono::duration<double> diff = end - start;
+
+```
+
+steady_clock：单调时钟，时间无法后退
+
+* steady_clock::now()返回现在的时间
+* steady_clock::time_point()返回更精确的时间点
+
+high_resolution_clock：提供最高精度的时钟
 
 # *this
 
@@ -40,10 +57,15 @@ this指针:
 
 类中有几种特殊的默认成员函数：默认构造，拷贝构造，拷贝赋值，移动构造，移动赋值，析构函数，它们分别有构造，初始化，赋值，销毁的作用
 
+```c++
+PilotEngine(const PilotEngine&) = delete;
+PilotEngine& operator=(const PilotEngine&) = delete;
+```
+
 = default 、= delete在这些特殊的成员函数中的应用：
 
 * = default 创建默认函数
-* = delete  删除默认函数
+* = delete  删除默认函数（形参名是可以省略的）
 
 构造：
 
@@ -102,6 +124,21 @@ static静态：用来修改变量/函数的作用域和生命周期
 全局静态变量：全局作用域用 static 修饰的变量，作用域限制为文件，外部不可访问，生命周期静态
 
 局部静态变量：局部作用域用 static 修饰的变量，作用域局部，生命周期静态
+
+```c++
+class Example {
+public:
+    static int count;    
+    static const double PI; 
+    static void printCount();
+};
+//类外定义
+int Example::count = 0;           
+const double Example::PI = 3.14; 
+void Example::printCount() {
+    std::cout << "Count: " << count << std::endl;
+}
+```
 
 静态成员变量：类中用 static 修饰的变量，作用域全局，生命周期静态
 
@@ -231,12 +268,33 @@ constexpr int factorial(int n) {
 
 # 初始化
 
-默认初始化、
+```c++
+int x; 
+```
 
-值初始化、
+默认初始化：定义时未显示初始化，全局作用域内置类型初始化为0，局部作用域内置类型值未定义, 类对象调用默认构造函数
 
-拷贝初始化
+```c++
+int x{}; 
+std::vector<int> v(10); //10个元素
+```
 
-直接初始化
+值初始化：使用空括号或空花括号进行的初始化，内置类型初始化为0，类对象调用默认构造函数
 
-列表初始化
+```c++
+std::string s1 = "hello"; 
+```
+
+拷贝初始化：使用等号进行的初始化，类调用拷贝构造函数或移动构造函数
+
+```c++
+std::string s2(5, 'a');
+```
+
+直接初始化：使用有参圆括号或有参花括号初始化，类调用匹配的构造函数
+
+```c++
+std::vector<int> v{1, 2, 3};
+```
+
+列表初始化：使用有参花括号进行的初始化，调用std::initializer_list构造函数
