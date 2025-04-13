@@ -1,5 +1,5 @@
 ---
-title: c++(6·= default、一些关键字、作用域、定义、数据类型、初始化)
+title: c++(6·= default、关键字、作用域、定义、数据类型、初始化)
 date: 2025-03-30 12:00:00 +0800
 categories: [C++]
 tags: []     # TAG names should always be lowercase
@@ -128,12 +128,12 @@ static静态：用来修改变量/函数的作用域和生命周期
 ```c++
 class Example {
 public:
-    static int count;    
+    static int count;  
     static const double PI; 
     static void printCount();
 };
 //类外定义
-int Example::count = 0;           
+int Example::count = 0;         
 const double Example::PI = 3.14; 
 void Example::printCount() {
     std::cout << "Count: " << count << std::endl;
