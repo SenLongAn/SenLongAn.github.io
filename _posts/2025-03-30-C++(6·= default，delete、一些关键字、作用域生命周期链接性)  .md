@@ -241,30 +241,92 @@ constexpr int factorial(int n) {
 
 在编程时，需要用到各种变量来存储各种信息，不同的数据类型决定内存分配的存储空间的大小
 
-内置类型：
+```c++
+
+数据类型分类（C++）
+├── 内置类型（Built-in Types）: C++语言本身直接支持的数据类型
+│   ├── 基本数据类型（Fundamental Types）: 不可再分解的最小数据类型
+│   │   ├── 算术类型（Arithmetic Types）: 支持算术运算的基本数据类型
+│   │   │   ├── 整型（Integral Types）
+│   │   │   │   ├── 字符类型
+│   │   │   │   │   ├── char 1字节，ASCII
+│   │   │   │   │   ├── wchar_t 宽字符2字节
+│   │   │   │   │   ├── char8_t 1 字节，明确表示 UTF-8 编码的 Unicode 字符
+│   │   │   │   │   ├── char16_t 2 字节，表示 UTF-16 编码的 Unicode 字符
+│   │   │   │   │   └── char32_t 4 字节，表示 UTF-32 编码的 Unicode 字符
+│   │   │   │   ├── 布尔类型：bool
+│   │   │   │   └── 整数类型
+│   │   │   │       ├── short 2 字节
+│   │   │   │       ├── int 4 字节
+│   │   │   │       ├── long 4/8 字节 L 或 l 后缀
+│   │   │   │       └── long long 8 字节 LL 或 ll后缀
+│   │   │   └── 浮点类型（Floating-point Types）
+│   │   │       ├── float 4字节
+│   │   │       ├── double 8字节
+│   │   │       └── long double 8字节
+│   │   └── void 类型：表示无类型或空类型
+│   └── 复合类型（Compound Types）: 可再分解的最小数据类型
+│       ├── 指针（Pointer）: T*
+│       ├── 数组（Array）: T[N]
+│       ├── 引用（Reference）
+│       │   ├── 左值引用：T&
+│       │   └── 右值引用：T&& 
+│       ├── 函数类型（Function Types）
+│       └── 限定类型（Qualified Types）
+│           ├── const限定：const T
+│           └── volatile限定：volatile T
+│
+├── 标准库类型（Standard Library Types）: C++标准库提供的数据类型
+│   ├── 容器类（Containers）
+│   │   ├── 序列容器
+│   │   │   ├── vector
+│   │   │   ├── array (C++11)
+│   │   │   ├── deque
+│   │   │   ├── forward_list (C++11)
+│   │   │   └── list
+│   │   ├── 关联容器
+│   │   │   ├── set
+│   │   │   ├── map
+│   │   │   ├── multiset
+│   │   │   └── multimap
+│   │   └── 无序关联容器 (C++11)
+│   │       ├── unordered_set
+│   │       ├── unordered_map
+│   │       ├── unordered_multiset
+│   │       └── unordered_multimap
+│   ├── 字符串类：string, wstring
+│   ├── 智能指针 (C++11)
+│   │   ├── unique_ptr
+│   │   ├── shared_ptr
+│   │   └── weak_ptr
+│   ├── 工具类
+│   │   ├── pair
+│   │   ├── tuple (C++11)
+│   │   └── variant (C++17)
+│   └── 其他
+│       ├── optional (C++17)
+│       ├── any (C++17)
+│       └── function (C++11)
+│
+└── 自定义数据类型（User-defined Types）
+    ├── 类类型（Class Types）：自定义数据类型
+    │   ├── class
+    │   └── struct
+    ├── 枚举类型（Enumeration Types）：自定义整数常量集合
+    │   ├── 无作用域枚举：enum
+    │   └── 有作用域枚举：enum class (C++11)
+    └── 联合体：union：多个数据共享同一内存
+```
 
 ![1743320103564](/assets/img/blog/c++/内置类型.png)
 
-修饰符：
-
 ![1743320107935](/assets/img/blog/c++/修饰符.png)
-
-新增类型：
 
 ![1743320112363](/assets/img/blog/c++/新增类型.png)
 
-派生数据类型：
-
 ![1743320117682](/assets/img/blog/c++/派生数据类型.png)
 
-标准库类型：
-
 ![1743320122189](/assets/img/blog/c++/标准库类型.png)
-
-注意：
-
-* 诸如链表，树，图……复杂结构，以上内置中是不存在的，需要我们根据以上自定义组合
-* 字面值类型（一望而知）：在编译期确定其值的类型
 
 # 初始化
 
