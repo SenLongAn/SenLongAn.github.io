@@ -440,6 +440,21 @@ constexpr int factorial(int n) {
 
 ![1743320122189](/assets/img/blog/c++/标准库类型.png)
 
+**C++ Pair，tuple，tie**
+
+* Pair
+  * 存储可不同数据类型的两个数据
+  * 定义：需要指明T1, T2类型
+  * 初始化:
+  * 赋值：
+  * 访问：.first, .second
+  * make_pair创建pair对象
+* tuple
+  * 存储可不同数据类型的多个数据
+  * 访问：get< index >(tuple name)
+* tie
+  * 可以将pair/tuple所有元素引用给tie，从而直接访问，如果有的不想给tie，用ignore
+
 # 初始化方式
 
 ```c++
