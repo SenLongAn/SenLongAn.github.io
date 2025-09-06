@@ -1,5 +1,5 @@
 ---
-title: Gamma、模糊、抗锯齿
+title: OpenGL复习(Gamma、模糊、抗锯齿)
 date: 2025-06-25 12:00:00 +0800
 categories: [OpenGL]
 tags: []

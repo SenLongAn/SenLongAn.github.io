@@ -1,5 +1,5 @@
 ---
-title: FPS、SwapChain、帧缓冲、卷积
+title: OpenGL复习(FPS、SwapChain、帧缓冲、卷积)
 date: 2025-06-24 12:00:00 +0800
 categories: [OpenGL]
 tags: []

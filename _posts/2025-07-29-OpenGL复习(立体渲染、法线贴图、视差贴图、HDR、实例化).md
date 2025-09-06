@@ -1,5 +1,5 @@
 ---
-title: 立体渲染、法线贴图、视差贴图、HDR、实例化
+title: OpenGL复习(立体渲染、法线贴图、视差贴图、HDR、实例化)
 date: 2025-07-29 12:00:00 +0800
 categories: [OpenGL]
 tags: []

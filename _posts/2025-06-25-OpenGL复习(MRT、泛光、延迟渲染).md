@@ -1,5 +1,5 @@
 ---
-title: MRT、泛光、延迟渲染
+title: OpenGL复习(MRT、泛光、延迟渲染)
 date: 2025-06-25 12:00:00 +0800
 categories: [OpenGL]
 tags: []
