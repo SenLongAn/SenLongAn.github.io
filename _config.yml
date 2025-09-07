@@ -16,7 +16,7 @@ timezone: Asia/Shanghai
 
 title: Sen's blog # the main title
 
-tagline: Personal knowledge base  # it will display as the sub-title
+tagline: Knowledge base  # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Record what should be recorded.

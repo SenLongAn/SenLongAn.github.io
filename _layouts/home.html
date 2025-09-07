@@ -3,6 +3,8 @@ layout: default
 refactor: true
 ---
 
+<h1 style="text-align: center; padding: 2rem; margin: 0;">请使用 Ctrl + F5 刷新页面以获取最新博客内容</h1>
+
 {% include lang.html %}
 
 {% assign all_pinned = site.posts | where: 'pin', 'true' %}
@@ -10,11 +12,11 @@ refactor: true
 
 {% assign posts = '' | split: '' %}
 
-<!-- Get pinned posts on current page -->
-
+<!-- 计算当前页可见文章范围 -->
 {% assign visible_start = paginator.page | minus: 1 | times: paginator.per_page %}
 {% assign visible_end = visible_start | plus: paginator.per_page %}
 
+<!-- 获取当前页的置顶文章 -->
 {% if all_pinned.size > visible_start %}
   {% if all_pinned.size > visible_end %}
     {% assign pinned_size = paginator.per_page %}
@@ -29,8 +31,7 @@ refactor: true
   {% assign pinned_size = 0 %}
 {% endif %}
 
-<!-- Get normal posts on current page -->
-
+<!-- 获取当前页的普通文章 -->
 {% assign normal_size = paginator.posts | size | minus: pinned_size %}
 
 {% if normal_size > 0 %}
@@ -68,7 +69,8 @@ refactor: true
           {% endif %}
 
           <div class="col-md-5">
-            <img src="{{ src }}" alt="{{ alt }}" {{ lqip }}>
+            <img src="{{ src }}" alt="{{ alt }}" {{ lqip }} 
+                 class="img-fluid rounded-start" loading="lazy">
           </div>
 
           {% assign card_body_col = '7' %}
@@ -113,6 +115,11 @@ refactor: true
         </div>
       </a>
     </article>
+  {% else %}
+    <div class="empty-state">
+      <i class="far fa-folder-open fa-3x"></i>
+      <p>No posts found.</p>
+    </div>
   {% endfor %}
 </div>
 <!-- #post-list -->
@@ -121,3 +128,81 @@ refactor: true
   {% include post-paginator.html %}
 {% endif %}
 
+<style>
+  .card-wrapper {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .post-preview {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+  }
+  
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+  
+  @media (max-width: 767.98px) {
+    .flex-md-row-reverse {
+      flex-direction: column-reverse !important;
+    }
+    
+    .col-md-5, .col-md-7 {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    
+    .col-md-5 {
+      height: 200px;
+    }
+  }
+</style>
+
+<script>
+// 添加图片加载错误处理
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('#post-list img');
+  
+  images.forEach(img => {
+    img.addEventListener('error', function() {
+      this.src = '{{ "/assets/images/placeholder.png" | relative_url }}';
+      this.alt = 'Image not available';
+    });
+  });
+  
+  // 添加平滑滚动到顶部功能
+  const postLinks = document.querySelectorAll('.post-preview');
+  postLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // 如果是新标签页打开，不执行平滑滚动
+      if (e.ctrlKey || e.metaKey || e.button === 1) return;
+      
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      
+      // 添加页面过渡效果
+      document.body.style.opacity = '0.7';
+      document.body.style.transition = 'opacity 0.3s ease';
+      
+      setTimeout(() => {
+        window.location.href = href;
+      }, 300);
+    });
+  });
+});
+</script>
