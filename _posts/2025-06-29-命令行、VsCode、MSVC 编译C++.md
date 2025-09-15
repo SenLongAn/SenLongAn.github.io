@@ -6,25 +6,23 @@ tags: []
 math: true
 ---
 
-# 编程环境相关名词
+# 名词
 
-* GNU/Linux、GNU计划创建一套完全自由的操作系统，诞生GNU/Linux操作系统
-* gcc、编译器,通常用于编译C
-* g++，编译器,通常用于编译C++，
-* 通常我们将两个编译器统称称为gcc编译器集合，它支持多种编程语言，包括C、C++、Objective-C、Fortran等
-
+* GNU：GNU计划创建一套完全自由的操作系统，他们几乎完成了所有必要的用户空间工具，但缺少内核
+* Linux：内核出现，和GNU组合在一起，形成完整可用的操作系统，称为Linux
+* GNU 编译器集合
+  * gcc、编译器,通常用于编译C
+  * g++，编译器,通常用于编译C++
 * Windows 操作系统
-* MINGW，包括Windows特定头文件库文件和使用GNU工具集GCC编译器，以便为windows提供特定的GNU开发环境，而不需要第三方C运行时库MSVC，可编译C/C++语言
-* MSVC、微软开发的第三方C运行时库/编译器，被Visual Studio IDE所集成，可编译C/C++语言
-
-* LLVM构架编译器的框架系统,用于优化以任意程序语言编写的程序的构建、运行、空闲时间
+* MinGW：通过Windows特定头文件库文件和GNU编译器集合 形成的开发环境，也就是GNU 编译器集合 + Window内核，可以理解为Window的移植版本
+* MSVC：微软开发的 C/C++ 编译器工具链，包括编译器和 C/C++ 运行时库, 被VS集成
 
 * make构建生成器，当代码框架增大，需要大量源文件、各种库 时，每次编译重新编写编译命令，通过make的makefile配置文件指定项目构建过程，从而当发生代码更改，只需调用简单的命令即可
 * cmake 构建生成器（为源码生成针对不同平台的配置文件），为了解决make的跨平台、不同编译器问题，和支持更多的功能，通过编写独立的CmakeList.txt文件，会选择系统环境和编译器来翻译CmakeList.txt，再进一步调用系统编译器构建文件
 
 * IDE高度集成开发环境：集成了代码编辑器，编译器，调试器和图像化用户界面……Visual Studio
 
-* 编辑器：可以理解为强大的记事本，Visual Studio Code，需要自己写配置文件，不易上手
+* 编辑器：可以理解为强大的记事本，如Visual Studio Code
 
 * 运行时库：支持程序运行的基本函数的集合
 
@@ -41,7 +39,7 @@ math: true
   * notepad hello.cpp创建一个hello.cpp文件
   * 打开文件输入简单的测试代码，保存
   * cl /EHsc hello.cpp 来编译程序（/EHsc选项用于启用标准 C++ 异常处理行为）
-  * 输入 hello运行程序
+  * hello.exe 运行程序
 * 编译多个源文件
   * cl /EHsc file1.cpp file2.cpp file3.cpp……
 * 更改可执行文件名
