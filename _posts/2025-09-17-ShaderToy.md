@@ -31,6 +31,9 @@ math: true
       * uniform vec4      iMouse;                // 鼠标像素坐标。xy: 当前位置（如果左键按* 下），zw: 点击位置
       * uniform samplerXX iChannel0..3;          // 输入通道。XX = 2D/Cube
       * uniform vec4      iDate;                 // （年，月，日，时间秒数）
+
+#### 代码阅读
+
 * 示例——默认代码：
 
 ```glsl
@@ -40,11 +43,11 @@ fragColor = vec4(1.0, 0.0, 0.0, 0.0);//输出红色
 fragColor = texture(iChannel0, uv);//纹理
 ```
 
-* 示例——2D圆sdf：
+* 示例——2D_sdf：
   * [参考项目链接](https://www.shadertoy.com/view/lfyBR1)
   * fixUV：假设fc宽度范围为0——10，则2*fc范围为0——20，减去10范围为-10——10，/10，转换为-1——1的uv范围，形成按中心扩散的uv坐标
   * ![1](../assets/img/blog/Tool/sdf距离.png)
-  * SDFCirlce：有限空间任何一点到圆表面的最小距离，length(uv)即可获得像素到中心的距离（也可以像素uv-中点像素uv，归一化获取长度），-r空间中任何一点到圆的距离，距离>r为正数，<\r为负数，==r为0
+  * SDFCirlce：有限空间任何一点到圆表面的最小距离，length（）函数获取向量长度，length(uv)即获取uv向量的长度，-r空间中任何一点到圆的距离，距离>r为正数，<\r为负数，==r为0
   * mainImage：
     * 定义颜色：>0橙色，<=0蓝色
     * ![1](../assets/img/blog/Tool/exp函数.png)
@@ -53,11 +56,20 @@ fragColor = texture(iChannel0, uv);//纹理
     * 等高线：随着距离增加，cos使其不断在-1——1之间变化，0.8 + 0.2*范围0.6——1.0周期变化，变灰再变亮，150.0\*控制周期频率
     * 圆轮廓：smoothstep(edge0, edge1, x)，当x位于[edge0, edge1]区间时，返回0——1之间的变化，否则返回0/1，如果dis在区间内，1.0-结果趋近1，越接近白色
 
-* 示例——ray matching：
+* 示例-3D_ray_matching：
+  * [参考项目链接](https://www.shadertoy.com/view/llt3R4)
+  * rayDirection：获取光线方向
+    * 将xy坐标变为中心往外的扩散，
+    * 相机到屏幕距离z：radians()将fov从角度转弧度，/2为fov的一半，现在构建三角形（相机到屏幕的垂线作为临边，到顶部屏幕为斜边，顶部到屏幕中心为对边），tanθ = 屏幕高度y的一半 / 距离z，距离为两者相除
+    * 对ray归一化
+  * sphereSDF：
+  * shortestDistanceToSurface：超过步进次数/小于最小范围/超过最大范围就返回，否则+步进长度即sdf，归一化的ray方向 * 标量（sdf）， + o 光源起点即camera的位置
+
+* 示例——3D_ray_matching：
   * 光线步进类似光线追踪，也是从摄像机发射光线，唯一不同的是，它是按照步进的方式，而不是一次性的和场景求交
   * [参考项目链接](https://www.shadertoy.com/view/3dySDc)
   * 场景：球体，平面，灯光，相机
-  * GetDist：sdf，空间中任意一点p，到场景中所有物体的最小距离，p到球面的距离 = p到球心距离 - 球半径，p到平面的距离 = p.y近似距离，取两者的最小距离
+  * GetDist：sdf，空间中任意一点p，到场景中所有物体的最小距离，length（）函数获取向量长度，p到球面的距离 = p到球心距离 - 球半径，p到平面的距离 = p.y近似距离，取两者的最小距离
   * RayMarch：光线从起点出发，每次增加sdf距离，当超过步长次数 / 超过最小/最大距离 时停止步进，随着步进（安全距离）会逐渐接近物体表面，返回光线最终位置，作为光线和场景的交点
 
     ```c++
