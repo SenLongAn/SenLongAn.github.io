@@ -1,31 +1,10 @@
 ---
-title: OpenGL复习(立体渲染、法线贴图、视差贴图、HDR、实例化)
+title: OpenGL复习(法线贴图、视差贴图、HDR、实例化)
 date: 2025-07-29 12:00:00 +0800
 categories: [OpenGL]
 tags: []
 math: true
 ---
-
-## 立体渲染（Stereo-Rendering）
-
-* 一个内容需要被绘制到左眼和右眼的纹理中
-* 假设n个物体，每个物体一次drawcall
-* Multi-Pass 渲染两张纹理，2n次drawcall
-* Single-Pass 渲染一张纹理
-* Double Wide 渲染一张双宽度纹理
-    * 普通，先渲染一侧，再渲染另一侧，遍历2n次，2n次drawcall
-    * ping-pong，每遍历到一个物体，分别在左右侧绘制，遍历n次，节省上下文切换开销，2n次drawcall
-* No Double Wide 渲染一张原大小纹理，Index 0 是左眼，Index 1 是右眼，遍历n次，节省上下文切换开销，n次drawcall
-    * Instanced 用Instance ID 区分左右眼的 View Matrix
-    * MultiView 用gl_ViewID_OVR 区分左右眼的 View Matrix
-* Quad-View 
-* 它将左右眼画面进一步拆分为 Inner-Left和 Inner-Right，Outer-Left 和 Outer-Right 四个视图
-* Outer 画面使用原始的 Fov 进行渲染，Inner 画面则是较小的 FOV
-* Inner 画面也会拥有较高的 PPD（Pixels Per Degree），也因此 Inner 画面会有更高的清晰度
-* 它有更多的渲染方式
-* 渲染4个纹理，遍历4n次，4n次drawcall
-* 渲染4个纹理，遍历n次，4n次drawcall
-* ……
 
 ## 法线贴图
 

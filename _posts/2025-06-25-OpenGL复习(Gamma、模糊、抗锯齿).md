@@ -15,18 +15,59 @@ math: true
 * 图中，横轴光子数量，纵轴颜色/亮度值，它们都以归一化表示,中间是线性的物理亮度，下方\^2.2，上方\^1/2.2 ~= 0.45
 * 观察发现，\^2.2比\^1的整体要暗，但0和1颜色是相等的
 * Gamma校正：应用Gamma倒数（1/2.2），线性颜色\^1 -> 显示器\^2.2 -> Gamma\^1/2.2 颜色变回最初设置的线性颜色
-* sRGB颜色空间：gamma2.2
 * 在opengl中使用Gamma校正：
-
   * 内建的sRGB帧缓冲：glEnable(GL_FRAMEBUFFER_SRGB);（注意：我们应在最后的颜色计算应用校正，否则将使用不正确的颜色值）
   * 手动在每个fragment shader中校正，更加简单的方式新增一个后期处理shader，仅在quad上校正一次
-* sRGB纹理：在sRGB中制作的纹理
+* RGB纹理：不用任何转换，线性颜色^1 -> 显示器^2.2 -> Gamma^1/2.2
+* sRGB纹理：在sRGB颜色空间（gamma2.2）中制作的纹理
   * 不使用校正时没有问题：纹理在sRGB空间创作和显示，这是统一的
   * 但应用了gamma后，纹理颜色就会很亮，因为我们在sRGB空间制作纹理，会通常将它的颜色设置的更亮，以便达到预期颜色（比如0.5的颜色值），经过gamma后它的颜色变为了线性颜色，会超出预期颜色
 * 为了解决这个问题，有几种方案：
-
   * 在线性空间工作：线性颜色\^1 -> 显示器\^2.2 -> Gamma\^1/2.2 颜色变回最初设置的线性颜色
   * 每次使用前\^2.2，opengl中提供了内置的纹理格式GL_SRGB和GL_SRGB_ALPHA，它们会自动校正为线性空间
+
+```c++
+#include <iostream>
+#include <cmath>
+
+// Linear RGB 转换为 sRGB
+double linearToSrgb(double linear) {
+    double s;
+    if (linear <= 0.0031308) {
+        s = linear * 12.92;
+    } else {
+        s = 1.055 * std::pow(linear, 1.0 / 2.4) - 0.055;
+    }
+    return s;
+}
+
+// sRGB 转换为 Linear RGB
+double srgbToLinear(double s) {
+    double linear;
+    if (s <= 0.04045) {
+        linear = s / 12.92;
+    } else {
+        linear = std::pow((s + 0.055) / 1.055, 2.4);
+    }
+    return linear;
+}
+
+int main() {
+    // 示例：将 Linear 值 0.5 转换为 sRGB 0.735
+    double linearValue = 0.5;
+    double srgbValue = linearToSrgb(linearValue);
+    std::cout << "Linear value " << linearValue << " converts to sRGB value " << srgbValue << std::endl;
+
+    // 示例：将 sRGB 值 0.735 转换为 Linear 0.5
+    srgbValue = 0.735;
+    linearValue = srgbToLinear(srgbValue);
+    std::cout << "sRGB value " << srgbValue << " converts to Linear value " << linearValue << std::endl;
+
+    return 0;
+}
+```
+
+* rgb空间和srgb空间转换算法
 
 ## 高斯模糊
 
