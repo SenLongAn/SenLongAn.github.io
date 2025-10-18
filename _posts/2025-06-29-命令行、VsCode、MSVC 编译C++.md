@@ -55,88 +55,166 @@ math: true
 * 新建项目文件夹（英文）用vscode打开
 * 新建项目文件…….cpp，输入简单的测试代码，保存
 * 配置项目
-  * configuration.json：C/C++ 编译器配置
+  * c_cpp_properties.json：
 
     ```c++
     {
         "configurations": [
             {
-                "name": "Win32",
+                "name": "VulkanTutorial",
+                "compilerPath": "……cl.exe",
+                "cppStandard": "c++17",
                 "includePath": [
                     "${workspaceFolder}/**",
-                    "${env:INCLUDE}"
-                ],
-                "defines": [
-                    "_DEBUG",
-                    "UNICODE",
-                    "_UNICODE"
-                ],
-                "windowsSdkVersion": "10.0.22000.0",
-                "compilerPath": "cl.exe",
-                "cStandard": "c17",
-                "cppStandard": "c++17",
-                "intelliSenseMode": "windows-msvc-x64",
-                "compilerPath": "D:\\……\\cl.exe"
+                    "D:\\Vulkan\\VulkanSDK\\1.3.296.0\\Include",
+                    "${workspaceFolder}/vendor/GLFW/include/",
+                    "${workspaceFolder}/vendor/GLM/"
+                ]
             }
         ],
         "version": 4
     }
     ```
 
-    * F! / ctrl+shift+p 打开命令调用面板，输入Edit Configurations(JSON)
-  * task.json：定义构建任务
+    * 配置C/C++扩展
+      * version版本固定为4
+      * name项目名，任意字符串
+      * compilerPath编译器路径
+      * cStandard/cppStandard C/C++标准
+        * "cppStandard": "c++11"
+        * "cppStandard": "c++14" 
+        * "cppStandard": "c++17"
+        * "cppStandard": "c++20"
+        * "cppStandard": "c++23"
+      * includePath头文件搜索路径，${workspaceFolder}/**表示当前工作区下的所有子目录（可选）
+      * intelliSenseMode智能代码补全辅助工具的模式（可选）
+        * "intelliSenseMode": "windows-gcc-x64"    // GCC on Windows
+        * "intelliSenseMode": "windows-msvc-x64"   // MSVC on Windows  
+        * "intelliSenseMode": "linux-gcc-x64"      // GCC on Linux
+        * "intelliSenseMode": "macos-clang-x64"    // Clang on macOS
+      * defines预处理器宏定义（可选）
+      * windowsSdkVersion版本（可选）
+    * 创建方式：F! / ctrl+shift+p 打开命令调用面板，输入Edit Configurations(JSON)
+  * task.json：
 
     ```c++
     {
-        "version": "2.0.0",
-        "tasks": [
-            {
-                "label": "build debug Win32",
-                "type": "process",
-                "command": "cl",
-                "args": ["/Fe:.\\…….exe","/Fo:.\\","/MTd","/Zi", "/Od", "/EHsc",".\\.cpp"],//FE:可执行文件输出目录和文件名，FO构建阶段文件输出目录，MTD：运行时库链接方式，……，最后是要编译的文件
-                "group": "build",
-                "problemMatcher": [
-                    "$msCompile"
-                ]
-            }
-        ]
+      "version": "2.0.0",
+      "tasks": [
+        {
+          "label": "MyTask",
+          "type": "process",
+          "command": "cl.exe",
+          "args": [
+            "/EHsc",
+            "/Fe:bin/main.exe",
+            "/Fo:bin/",
+            "/Fd:bin/vc140.pdb",
+            "/Zi",
+            "/Od",
+            "/MDd",
+            "/I", 
+            "D:\\Vulkan\\VulkanSDK\\1.3.296.0\\Include",
+            "/I",
+            "${workspaceFolder}/vendor/GLFW/include/",
+            "/I",
+            "${workspaceFolder}/vendor/GLM", 
+            "*.cpp",
+            "/link",
+            "/LIBPATH:D:\\Vulkan\\VulkanSDK\\1.3.296.0\\Lib",
+            "/LIBPATH:${workspaceFolder}/vendor/GLFW/lib-vc2022",
+            "vulkan-1.lib",
+            "glfw3.lib",
+            "user32.lib",
+            "gdi32.lib",
+            "shell32.lib",
+            "/NODEFAULTLIB:MSVCRT"
+          ],
+          "group": "build"
+        }
+      ]
     }
     ```
 
-    * F! / ctrl+shift+p 打开命令调用面板，输入Tasks:Configure Default Build Task
-  * 现在可以编译了
-    * Terminal->Run Task -> 选择刚才的Task
+    * 配置构建器
+      * version版本号，只有2.0.0
+      * label任务名称，任意字符串
+      * type任务类型
+        * cppbuild:C/C++专用构建任务，自动配置调试信息
+        * shell:执行shell命令.命令行任务
+        * process:执行外部进程,直接运行可执行文件
+      * command编译命令:
+        * "command": "cl.exe"                    // MSVC编译器
+        * "command": "g++"                       // GCC编译器  
+        * "command": "clang++"                   // Clang编译器
+        * "command": "cmake"                     // CMake
+        * "command": "C:/MinGW/bin/gcc.exe"      // 完整路径
+      * args命令行参数：MSVC：
+        * /EHsc // 异常处理
+        * /Fe:  //输出目录和可执行程序名
+        * /Fo:  //中间文件目录
+        * 链接方式
+          * MT：多线程静态链接(静态库)
+          * MTd：多线程调试静态链接，启用调试功能
+          * MD：多线程动态链接（动态库）
+          * MDd：多线程调试动态链接，启用调试功能
+        * 源文件：
+          * 列出每个文件的目录和文件名
+          * 使用 目录/*.cpp，可以匹配此目录下所有文件
+      * group任务分组，决定快捷键行为
+        * build，有专用快捷键，用于Ctrl+Shift+B 构建
+        * test测试任务组
+        * 无分组，只能手动运行
+      * problemMatcher解析编译器输出（可选）
+      * options工作目录（可选）
+    * VSCode配置文件的变量索引
+      * ${workspaceFolder} - 工作区根目录 VS Code 中打开的文件夹目录 （通常是项目的位置）
+      * ${workspaceFolderBasename} - 没有任何斜杠 (/)的 VS Code 中打开的文件夹目录
+      * ${file} - 目前打开文件的绝对位置
+      * ${relativeFile} - 目前打开文件相对于 workspaceFolder 的相对位置
+      * ${fileBasename} -  目前打开文件的文件名（有拓展名，如： main.cpp）
+      * ${fileBasenameNoExtension} - 目前打开文件的出去拓展名的文件名（无拓展名， 如： main.cpp）
+      * ${cwd} - task runner的工作目录
+      * ${fileDirname} - 目前打开文件的目录位置
+      * ${fileExtname} - 目前打开文件的拓展名
+      * ${lineNumber} - 文件中目前被选择的行数
+      * ${selectedText} - 文件中目前被选择的内容
+    * 创建方式：F! / ctrl+shift+p 打开命令调用面板，输入Tasks:Configure Default Build Task
+    * 编译：Terminal->Run Task -> 选择刚才的Task
+  * launch.json：
 
-    ```c++
-    {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": "(Windows) 启动",
-                "type": "cppvsdbg",
-                "request": "launch",
-                "program": "…….exe",
-                "args": [],
-                "stopAtEntry": false,
-                "cwd": "${workspaceFolder}",
-                "environment": [],
-                "externalConsole": false
-            }
-        ]
-    }
-    ```
+      ```c++
+      {
+          "version": "0.2.0",
+          "configurations": [
+              {
+                  "name": "MyProject",
+                  "type": "cppvsdbg",
+                  "request": "launch",
+                  "program": "${workspaceFolder}/bin/main.exe"
+              }
+          ]
+      }
+      ```
 
-  * launch.json：配置调试启动参数
-    * 按Run->AddConfiguration  选择C++（Windows）
-    * 出现没有用于调试JSON with comments的扩展​​，切换到cpp文件再按下F5
-  * 现在可以运行了
-    * 按下F5/Run->StartDebugging,即可在DEBUG CONSOLE看到输出
+    * 配置运行器
+      * name 任意字符串
+      * type 指定调试器类型
+        * "cppvsdbg" - Windows 上使用 Visual Studio 调试器
+        * "cppdbg" - 使用 GDB/LLDB (MinGW, Linux, macOS)
+        * "node" - Node.js 调试
+      * request 调试请求类型
+        * "launch" - 启动新程序进行调试
+        * "attach" - 附加到已运行进程
+      * program要调试的可执行文件路径
+      * args传递给程序的命令行参数（可选）
+    * 创建方式：
+      * 按Run->AddConfiguration  选择C++（Windows）
+      * 出现没有用于调试JSON with comments的扩展​​，切换到cpp文件再按下F5
+    * 运行：按下F5/Run->StartDebugging,即可在DEBUG CONSOLE看到输出
 * 调试
-  * 它自动帮助我们生成了pdb文件，因此可以调试
-* settings.json：项目级设置
-* 编译多个源文件
-  * 新增源文件
-  * 对tasks.json的要编译的文件新增文件
-  * 编译
-  * 运行
+  * 生成pdb文件：在tasks.json中，/Zi生成调试信息文件，/Od禁用优化便更好地进行调试
+* 编译多个源文件:新增源文件,在tasks.json中新增文件
+* 使用库
+  * c_cpp_properties.json中的includePath添加库的头文件目录
+  * tasks.json中args中/I，添加库的头文件目录，/link，/LIBPATH:，添加库文件目录，还需要使用lib文件的名称

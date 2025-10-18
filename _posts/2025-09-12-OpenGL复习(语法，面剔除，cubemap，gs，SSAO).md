@@ -18,7 +18,6 @@ math: true
 * IO读取shader文件内容，存放在string对象中，通过c_str转换C风格字符串（常量字符数组）
 * 缓冲区操作
   * glBufferSubData，和将数据填充到整个缓冲（GPU显存）不同，它填充缓冲的特定区域，它需要提供一个偏移量，指定从何处开始填充，这样顶点数据不用交错布局，可以采用分批布局，还需要调整之前的布局方式
-  * memcpy将数据拷贝到缓冲
   * glCopyBufferSubData将一个缓冲的内容拷贝到另一个缓冲
 * 以gl_为前缀的是GLSL的内建变量：
   * gl_PointSize图元设置为点并控制它的大小，gl_VertexID顶点ID，gl_FragCoord它的xy存储片段屏幕坐标、z存储深度坐标，gl_FrontFacing当前是正面还是背面，gl_FragDepth片段只读深度值，gl_in[]接口块数组获取一个图元的所有顶点数据，gl_InstanceID实例化渲染的id
